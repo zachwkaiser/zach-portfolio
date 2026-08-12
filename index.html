@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zach Kaiser — Software Engineering Student</title>
+  <meta name="description" content="Portfolio of Zach Kaiser, software engineering student at UNCW." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/pages/home.css" />
+  <link rel="stylesheet" href="css/pages/about.css" />
+  <link rel="stylesheet" href="css/pages/experience.css" />
+  <link rel="stylesheet" href="css/pages/projects.css" />
+  <link rel="stylesheet" href="css/pages/contact.css" />
+  <script>
+    try {
+      var t = localStorage.getItem("zk-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+  <style>
+    /* Hide shell until partials inject (avoids empty-layout flash) */
+    html:not(.is-ready) #zk-root { visibility: hidden; }
+  </style>
+</head>
+<body>
+  <div id="zk-root">
+    <!-- Shared chrome: progress, back-to-top, nav, mobile menu -->
+    <div data-include="partials/chrome.html"></div>
+
+    <main>
+      <div data-include="partials/hero.html"></div>
+      <div data-include="partials/about.html"></div>
+      <div data-include="partials/experience.html"></div>
+      <div data-include="partials/projects.html"></div>
+      <div data-include="partials/contact.html"></div>
+    </main>
+
+    <!-- Project detail templates + modal shell -->
+    <div data-include="partials/project-details.html"></div>
+
+    <!-- Resume modal -->
+    <div data-include="partials/resume-modal.html"></div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

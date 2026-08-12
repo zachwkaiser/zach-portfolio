@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:#0a0c10;font-family:'Manrope',system-ui,sans-serif;transition:background .4s ease;}
+  *{box-sizing:border-box;}
+  a{color:#2563eb;text-decoration:none;}
+  a:hover{color:#3b82f6;}
+  ::selection{background:#2563eb;color:#eef2f8;}
+  @keyframes zkbob{0%,100%{transform:translateY(0);}50%{transform:translateY(9px);}}
+  @keyframes zkfade{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
+  @keyframes zkslide{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes zkmarquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    [style*="zkbob"]{animation:none!important;}
+    [style*="zkfade"],[style*="zkslide"]{animation:none!important;opacity:1!important;transform:none!important;}
+    .zk-marquee{animation:none!important;flex-wrap:wrap!important;width:auto!important;}
+  }
+  @media (min-width:860px){
+    .zk-about-grid{grid-template-columns:1.25fr .85fr!important;}
+    .zk-contact-grid{grid-template-columns:1fr 1fr!important;}
+  }
+  .zk-plist{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(20px,3vw,32px);}
+  .zk-prow{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,48px);align-items:center;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s ease,border-color .35s ease;}
+  .zk-prow:hover{transform:translateY(-6px);box-shadow:0 26px 54px rgba(0,0,0,.24);border-color:var(--accent);}
+  .zk-pshot{position:relative;aspect-ratio:16/11;background-image:repeating-linear-gradient(135deg,var(--ph-a) 0 12px,var(--ph-b) 12px 24px);display:flex;align-items:center;justify-content:center;color:var(--ph-text);font-family:ui-monospace,Menlo,monospace;font-size:12px;}
+  .zk-pbody{padding:clamp(22px,3vw,40px) clamp(22px,3vw,40px) clamp(22px,3vw,40px) 0;}
+  .zk-pnum{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;letter-spacing:.12em;color:var(--accent);margin:0 0 10px;}
+  .zk-prow:nth-child(even) .zk-pcard-wrap{grid-column:3;justify-self:start;}
+  .zk-prow:nth-child(even) .zk-pspacer{grid-column:1;}
+  @media (max-width:760px){
+    .zk-ptimeline::before{left:22px;}
+    .zk-prow{grid-template-columns:1fr!important;}
+    .zk-pbody{padding:24px!important;}
+  }
+  @media (max-width:760px){
+    .zk-navlinks{display:none!important;}
+    .zk-burger{display:flex!important;}
+  }
+</style>
+</helmet>
+<div id="zk-root" ref="{{ setRoot }}" style="--bg:#0a0c10;--text:#eef2f8;--text-dim:#aeb6c4;--text-mute:#7b8494;--surface:#14171d;--surface-2:#06070a;--border:rgba(238,242,248,.10);--border-mid:rgba(238,242,248,.20);--chip-bg:rgba(238,242,248,.06);--chip-border:rgba(238,242,248,.13);--chip-text:#cbd3e0;--ph-a:#1a1f27;--ph-b:#12161c;--ph-border:rgba(238,242,248,.12);--ph-text:#7b8494;--accent:#3b82f6;--accent-2:#7aa7ff;--inv-bg:#eef2f8;--inv-text:#0a0c10;--hero-fade:rgba(10,12,16,.9);--overlay:rgba(8,10,14,.98);--scrim:rgba(4,6,10,.74);--success:#a9c99b;--success-bg:rgba(120,160,90,.16);--success-border:rgba(120,160,90,.4);--err-border:#9a5b4a;--err-text:#e6a58f;background:var(--bg);color:var(--text);min-height:100vh;position:relative;transition:background .4s ease,color .4s ease;">
+
+  <!-- scroll progress -->
+  <div aria-hidden="true" style="position:fixed;top:0;left:0;height:3px;z-index:120;background:var(--accent);width:{{ progressPct }};transition:width .12s linear;box-shadow:0 0 12px rgba(59,130,246,.6);"></div>
+
+  <!-- floating back-to-top -->
+  <sc-if value="{{ showBackTop }}">
+    <button type="button" onClick="{{ goHero }}" data-magnetic="0.3" aria-label="Back to top" style="position:fixed;right:clamp(18px,4vw,40px);bottom:clamp(18px,4vw,40px);z-index:96;cursor:pointer;width:52px;height:52px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(59,130,246,.4);animation:zkfade .3s ease both;transition:transform .18s ease,box-shadow .3s ease;" style-hover="box-shadow:0 14px 38px rgba(59,130,246,.55);">&uarr;</button>
+  </sc-if>
+
+  <!-- NAV -->
+  <nav aria-label="Primary" style="position:fixed;top:0;left:0;right:0;height:68px;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,64px);backdrop-filter:blur(14px);background:{{ navBg }};border-bottom:1px solid {{ navBorder }};transition:background .4s ease,border-color .4s ease;">
+    <a href="#hero" onClick="{{ goHero }}" style="display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.02em;color:inherit;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--accent);color:#fff;font-size:15px;">ZK</span>
+      <span>Zach Kaiser</span>
+    </a>
+    <button type="button" role="switch" aria-checked="{{ isLight }}" aria-label="{{ themeLabel }}" onClick="{{ toggleTheme }}" style="margin-right:auto;margin-left:16px;cursor:pointer;position:relative;flex-shrink:0;display:inline-flex;align-items:center;justify-content:space-between;width:62px;height:32px;padding:0 8px;border-radius:999px;background:var(--chip-bg);border:1px solid var(--border-mid);transition:border-color .25s ease,background .25s ease;" style-hover="border-color:var(--accent);">
+      <span aria-hidden="true" style="font-size:12px;line-height:1;color:var(--text-mute);">&#9728;</span>
+      <span aria-hidden="true" style="font-size:12px;line-height:1;color:var(--text-mute);">&#9790;</span>
+      <span aria-hidden="true" style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.3);transform:translateX({{ knobX }});transition:transform .28s cubic-bezier(.22,.61,.36,1);"></span>
+    </button>
+    <div style="display:flex;align-items:center;gap:clamp(12px,2vw,30px);">
+      <div class="zk-navlinks" style="display:flex;align-items:center;gap:clamp(14px,2.2vw,34px);">
+        <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="4">
+          <a href="{{ l.href }}" onClick="{{ l.go }}" aria-current="{{ l.current }}" style="position:relative;font-size:15px;font-weight:600;color:inherit;padding:6px 2px;opacity:{{ l.dim }};transition:opacity .25s ease;">
+            {{ l.label }}
+            <span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent);border-radius:2px;transform:scaleX({{ l.active01 }});transform-origin:left;transition:transform .3s cubic-bezier(.22,.61,.36,1);"></span>
+          </a>
+        </sc-for>
+      </div>
+      <button type="button" onClick="{{ openResume }}" data-magnetic="0.25" class="zk-navlinks" style="cursor:pointer;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;color:var(--inv-text);background:var(--inv-bg);border:none;padding:10px 18px;border-radius:999px;transition:transform .18s ease,box-shadow .25s ease;" style-hover="box-shadow:0 8px 24px rgba(0,0,0,.28);">Resume</button>
+      <button type="button" aria-label="Open menu" aria-expanded="{{ navOpen }}" onClick="{{ toggleMenu }}" class="zk-burger" style="display:none;cursor:pointer;background:transparent;border:none;color:inherit;padding:8px;flex-direction:column;gap:5px;">
+        <span style="display:block;width:24px;height:2px;background:currentColor;border-radius:2px;"></span>
+        <span style="display:block;width:24px;height:2px;background:currentColor;border-radius:2px;"></span>
+        <span style="display:block;width:18px;height:2px;background:currentColor;border-radius:2px;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <sc-if value="{{ navOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Menu" onKeyDown="{{ trap }}" style="position:fixed;inset:0;z-index:130;background:var(--overlay);backdrop-filter:blur(6px);display:flex;flex-direction:column;padding:24px clamp(20px,6vw,48px);animation:zkfade .3s ease both;">
+      <div style="display:flex;justify-content:flex-end;">
+        <button type="button" aria-label="Close menu" onClick="{{ closeMenu }}" style="cursor:pointer;background:transparent;border:none;color:var(--text);font-size:34px;line-height:1;padding:6px 12px;">&times;</button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;">
+        <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="4">
+          <a href="{{ l.href }}" onClick="{{ l.go }}" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,9vw,56px);letter-spacing:-.03em;color:var(--text);padding:6px 0;">{{ l.label }}</a>
+        </sc-for>
+        <button type="button" onClick="{{ openResume }}" style="margin-top:22px;align-self:flex-start;cursor:pointer;font-family:'Manrope',sans-serif;font-size:17px;font-weight:700;color:#fff;background:var(--accent);border:none;padding:14px 26px;border-radius:999px;">View Resume</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- HERO -->
+  <header id="hero" style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:96px clamp(20px,6vw,96px) 60px;">
+    <canvas id="zk-hero-canvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+    <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(120% 90% at 78% 12%,rgba(59,130,246,.16),transparent 55%),linear-gradient(180deg,transparent 55%,var(--hero-fade) 100%);pointer-events:none;"></div>
+    <div style="position:relative;max-width:1000px;">
+      <p style="animation:zkslide .7s ease both;display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mute);margin:0 0 22px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);"></span>
+        Software Engineering Student at UNCW
+      </p>
+      <h1 style="animation:zkslide .7s ease .06s both;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:clamp(44px,9vw,116px);line-height:.94;letter-spacing:-.035em;margin:0 0 26px;color:var(--text);">Zach Kaiser</h1>
+      <p style="animation:zkslide .7s ease .14s both;max-width:56ch;min-height:2.6em;font-size:clamp(18px,2.3vw,24px);line-height:1.5;color:var(--text-dim);margin:0 0 40px;" aria-live="polite">{{ typedText }}<span aria-hidden="true" style="display:inline-block;width:2px;height:1.05em;margin-left:2px;transform:translateY(3px);background:var(--accent);opacity:{{ caretOpacity }};"></span></p>
+      <div style="animation:zkslide .7s ease .2s both;display:flex;flex-wrap:wrap;gap:14px;">
+        <a href="#projects" onClick="{{ goProjects }}" data-magnetic="0.3" style="display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:#fff;background:var(--accent);padding:16px 30px;border-radius:999px;transition:transform .18s ease,box-shadow .3s ease;" style-hover="box-shadow:0 14px 40px rgba(59,130,246,.45);">View my work <span aria-hidden="true">&rarr;</span></a>
+        <button type="button" onClick="{{ openResume }}" data-magnetic="0.25" style="cursor:pointer;font-family:'Manrope',sans-serif;display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:var(--text);background:transparent;border:1px solid var(--border-mid);padding:16px 30px;border-radius:999px;transition:transform .18s ease,border-color .25s ease,background .25s ease;" style-hover="border-color:var(--text);background:var(--chip-bg);">Open resume</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" style="min-height:100vh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) clamp(20px,6vw,96px);border-top:1px solid var(--border);">
+    <div style="max-width:1200px;margin:0 auto;width:100%;">
+      <div style="display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start;" class="zk-about-grid">
+        <div data-reveal style="opacity:0;transform:translateY(24px);">
+          <p style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);margin:0 0 18px;">About</p>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-.025em;margin:0 0 26px;max-width:16ch;color:var(--text);">A little more about me.</h2>
+          <div style="max-width:62ch;font-size:17px;line-height:1.7;color:var(--text-dim);">
+            <p style="margin:0 0 18px;">I'm a software engineer who enjoys building full-stack applications and seeing an idea through from a rough concept to something people actually rely on. The part I enjoy most is working with a team to figure out how to build something that genuinely works.</p>
+            <p style="margin:0;">I've delivered feature work on an enterprise cloud banking platform, led a five-person team as project manager to ship a desktop app end to end, and built research tools that turned complex data into something people could act on. Across all of it, I care about writing dependable software, understanding the business behind it, and being someone a team can count on.</p>
+          </div>
+        </div>
+        <div data-reveal data-reveal-delay="120" style="opacity:0;transform:translateY(24px);align-self:stretch;" class="zk-about-photo">
+          <img src="uploads/zach.Kaiser_headshot-2026 (1).jpg" alt="Zach Kaiser, smiling, wearing a white polo in front of a green living wall" style="aspect-ratio:4/5;width:100%;height:100%;object-fit:cover;border-radius:16px;border:1px solid var(--border);display:block;" />
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div data-reveal data-reveal-delay="80" style="opacity:0;transform:translateY(24px);margin-top:clamp(56px,8vw,96px);">
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(20px,2.4vw,26px);letter-spacing:-.01em;margin:0 0 24px;color:var(--text);">What I work with</h3>
+        <div role="img" aria-label="Technologies I work with: JavaScript, TypeScript, React, Next.js, Node.js, HTML5, Salesforce, Python, PostgreSQL, AWS, Git, and GitHub" style="position:relative;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);">
+          <div class="zk-marquee" style="display:flex;align-items:center;gap:clamp(40px,6vw,72px);width:max-content;animation:zkmarquee 34s linear infinite;">
+            <sc-for list="{{ marqueeSkills }}" as="s" hint-placeholder-count="12">
+              <span aria-hidden="true" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:13px;">
+                <span style="width:34px;height:34px;flex:0 0 auto;-webkit-mask:url({{ s.logo }}) center/contain no-repeat;mask:url({{ s.logo }}) center/contain no-repeat;background:var(--text);opacity:.82;"></span>
+                <span style="font-size:16px;font-weight:600;color:var(--text-dim);white-space:nowrap;">{{ s.name }}</span>
+              </span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" style="min-height:100vh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) clamp(20px,6vw,96px);border-top:1px solid var(--border);">
+    <div style="max-width:960px;margin:0 auto;width:100%;">
+      <div data-reveal style="opacity:0;transform:translateY(24px);margin-bottom:clamp(48px,7vw,72px);">
+        <p style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px;">Experience</p>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-.025em;margin:0;max-width:18ch;color:var(--text);">My journey so far.</h2>
+      </div>
+      <ol style="list-style:none;margin:0;padding:0;position:relative;">
+        <div aria-hidden="true" style="position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,rgba(59,130,246,.55),rgba(59,130,246,.08));"></div>
+        <sc-for list="{{ experiences }}" as="x" hint-placeholder-count="3">
+          <li data-reveal data-reveal-delay="{{ x.delay }}" style="opacity:0;transform:translateY(24px);position:relative;padding:0 0 clamp(40px,5vw,56px) clamp(44px,6vw,64px);">
+            <span aria-hidden="true" style="position:absolute;left:2px;top:4px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 0 5px rgba(59,130,246,.12);"></span>
+            <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:6px;">
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(20px,2.6vw,26px);margin:0;color:var(--text);">{{ x.role }}</h3>
+              <sc-if value="{{ x.current }}">
+                <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--success);background:var(--success-bg);border:1px solid var(--success-border);padding:3px 9px;border-radius:999px;">CURRENT</span>
+              </sc-if>
+            </div>
+            <p style="font-size:16px;font-weight:600;color:var(--text-dim);margin:0 0 2px;">{{ x.org }}</p>
+            <p style="font-size:14px;color:var(--text-mute);margin:0 0 16px;">{{ x.dates }}</p>
+            <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;max-width:64ch;">
+              <sc-for list="{{ x.bullets }}" as="b" hint-placeholder-count="3">
+                <li style="position:relative;padding-left:22px;font-size:16px;line-height:1.6;color:var(--text-dim);">
+                  <span aria-hidden="true" style="position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:var(--accent);transform:rotate(45deg);"></span>
+                  {{ b }}
+                </li>
+              </sc-for>
+            </ul>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" style="min-height:100vh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) clamp(20px,6vw,96px);border-top:1px solid var(--border);">
+    <div style="max-width:1200px;margin:0 auto;width:100%;">
+      <div data-reveal style="opacity:0;transform:translateY(24px);margin-bottom:clamp(40px,6vw,64px);max-width:60ch;">
+        <p style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px;">Projects</p>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-.025em;margin:0 0 16px;color:var(--text);">Things I've built.</h2>
+        <p style="font-size:17px;line-height:1.6;color:var(--text-mute);margin:0;">A few projects I'm proud of. Click any card for the full story, screenshots, and links.</p>
+      </div>
+      <div class="zk-plist">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+          <button type="button" onClick="{{ p.open }}" data-reveal data-reveal-delay="{{ p.delay }}" aria-label="{{ p.aria }}" class="zk-prow" style="opacity:0;transform:translateY(24px);cursor:pointer;text-align:left;font-family:inherit;padding:0;">
+            <div class="zk-pshot" role="img" aria-label="{{ p.shotAlt }}" style="background-image:{{ p.shotBg }};background-size:cover;background-position:top center;">{{ p.shotText }}</div>
+            <div class="zk-pbody">
+              <p class="zk-pnum">PROJECT {{ p.num }}</p>
+              <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:12px;">
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(22px,3vw,28px);letter-spacing:-.02em;margin:0;color:var(--text);">{{ p.title }}</h3>
+                <span style="font-size:13px;font-weight:600;letter-spacing:.03em;color:var(--text-mute);white-space:nowrap;">{{ p.dates }}</span>
+              </div>
+              <p style="font-size:16px;line-height:1.6;color:var(--text-dim);margin:0 0 18px;max-width:46ch;">{{ p.summary }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;">
+                <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3">
+                  <span style="font-size:12px;font-weight:600;color:var(--chip-text);background:var(--chip-bg);border:1px solid var(--chip-border);padding:5px 11px;border-radius:7px;">{{ t }}</span>
+                </sc-for>
+              </div>
+              <span aria-hidden="true" style="display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:700;color:var(--accent);">View details <span>&rarr;</span></span>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="min-height:100vh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) clamp(20px,6vw,96px);border-top:1px solid var(--border);">
+    <div style="max-width:1080px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,72px);align-items:start;" class="zk-contact-grid">
+      <div data-reveal style="opacity:0;transform:translateY(24px);">
+        <p style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px;">Contact</p>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;max-width:14ch;color:var(--text);">Let's talk.</h2>
+        <p style="font-size:17px;line-height:1.6;color:var(--text-dim);margin:0 0 32px;max-width:44ch;">Feel free to reach out. I'm always open to connecting, whether it's about an opportunity, a project, or just to talk. You can send a note or reach me directly below.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="3">
+            <a href="{{ c.href }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;color:var(--text);font-size:16px;font-weight:600;padding:12px 16px;border:1px solid var(--border-mid);border-radius:12px;transition:border-color .25s ease,background .25s ease,transform .2s ease;" style-hover="border-color:var(--accent);background:var(--chip-bg);transform:translateX(4px);">
+              <span aria-hidden="true" style="width:22px;height:22px;flex:0 0 auto;-webkit-mask:url({{ c.logo }}) center/contain no-repeat;mask:url({{ c.logo }}) center/contain no-repeat;background:var(--accent);"></span>
+              <span style="display:flex;flex-direction:column;">
+                <span style="font-size:13px;color:var(--text-mute);font-weight:500;">{{ c.label }}</span>
+                <span>{{ c.value }}</span>
+              </span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-reveal data-reveal-delay="120" style="opacity:0;transform:translateY(24px);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:clamp(24px,4vw,40px);">
+        <sc-if value="{{ submitted }}">
+          <div role="status" style="min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;animation:zkfade .4s ease both;">
+            <span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:var(--success-bg);border:1px solid var(--success-border);color:var(--success);font-size:30px;">&#10003;</span>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;margin:0;color:var(--text);">Message sent!</h3>
+            <p style="font-size:16px;line-height:1.6;color:var(--text-dim);margin:0;max-width:40ch;">Thanks for reaching out, {{ sentName }}. I'll get back to you soon.</p>
+            <button type="button" onClick="{{ resetForm }}" style="cursor:pointer;margin-top:6px;font-family:inherit;font-size:15px;font-weight:700;color:var(--accent);background:transparent;border:none;">Send another &rarr;</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showForm }}">
+          <form novalidate onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:20px;">
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <label for="zk-name" style="font-size:14px;font-weight:600;color:var(--text-dim);">Name</label>
+              <input id="zk-name" type="text" value="{{ form.name }}" onInput="{{ setName }}" onBlur="{{ blurName }}" aria-invalid="{{ nameInvalid }}" aria-describedby="zk-name-err" placeholder="Jane Recruiter" style="font-family:inherit;font-size:16px;color:var(--text);background:var(--surface-2);border:1px solid {{ nameBorder }};border-radius:10px;padding:13px 15px;outline:none;transition:border-color .2s ease;" style-focus="border-color:var(--accent);" />
+              <sc-if value="{{ nameError }}"><span id="zk-name-err" role="alert" style="font-size:13px;color:var(--err-text);">{{ errors.name }}</span></sc-if>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <label for="zk-email" style="font-size:14px;font-weight:600;color:var(--text-dim);">Email</label>
+              <input id="zk-email" type="email" value="{{ form.email }}" onInput="{{ setEmail }}" onBlur="{{ blurEmail }}" aria-invalid="{{ emailInvalid }}" aria-describedby="zk-email-err" placeholder="jane@company.com" style="font-family:inherit;font-size:16px;color:var(--text);background:var(--surface-2);border:1px solid {{ emailBorder }};border-radius:10px;padding:13px 15px;outline:none;transition:border-color .2s ease;" style-focus="border-color:var(--accent);" />
+              <sc-if value="{{ emailError }}"><span id="zk-email-err" role="alert" style="font-size:13px;color:var(--err-text);">{{ errors.email }}</span></sc-if>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <label for="zk-msg" style="font-size:14px;font-weight:600;color:var(--text-dim);">Message</label>
+              <textarea id="zk-msg" rows="4" value="{{ form.message }}" onInput="{{ setMessage }}" onBlur="{{ blurMessage }}" aria-invalid="{{ msgInvalid }}" aria-describedby="zk-msg-err" placeholder="Tell me a little about the role or project…" style="font-family:inherit;font-size:16px;color:var(--text);background:var(--surface-2);border:1px solid {{ msgBorder }};border-radius:10px;padding:13px 15px;outline:none;resize:vertical;min-height:110px;transition:border-color .2s ease;" style-focus="border-color:var(--accent);"></textarea>
+              <sc-if value="{{ msgError }}"><span id="zk-msg-err" role="alert" style="font-size:13px;color:var(--err-text);">{{ errors.message }}</span></sc-if>
+            </div>
+            <button type="submit" data-magnetic="0.2" style="cursor:pointer;font-family:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--accent);border:none;padding:15px 26px;border-radius:999px;transition:transform .18s ease,box-shadow .3s ease;" style-hover="box-shadow:0 12px 34px rgba(59,130,246,.4);">Send message</button>
+          </form>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT MODAL -->
+  <sc-if value="{{ activeProject }}">
+    <div role="dialog" aria-modal="true" aria-labelledby="zk-proj-title" onClick="{{ backdropCloseProject }}" onKeyDown="{{ trap }}" style="position:fixed;inset:0;z-index:140;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px);background:var(--scrim);backdrop-filter:blur(8px);animation:zkfade .25s ease both;">
+      <div data-modal-panel style="animation:zkfade .28s cubic-bezier(.22,.61,.36,1) both;position:relative;width:min(760px,100%);max-height:88vh;overflow:auto;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:20px;padding:clamp(24px,4vw,40px);">
+        <button type="button" aria-label="Close" onClick="{{ closeProject }}" style="position:absolute;top:16px;right:16px;cursor:pointer;background:var(--chip-bg);border:1px solid var(--chip-border);color:var(--chip-text);width:38px;height:38px;border-radius:50%;font-size:22px;line-height:1;">&times;</button>
+        <p style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin:0 0 8px;">Project</p>
+        <h3 id="zk-proj-title" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,4vw,38px);letter-spacing:-.02em;margin:0 0 4px;color:var(--text);">{{ activeProject.title }}</h3>
+        <p style="font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--text-mute);margin:0 0 12px;">{{ activeProject.dates }}{{ activeProject.roleSuffix }}</p>
+        <p style="font-size:17px;line-height:1.5;color:var(--text-mute);margin:0 0 22px;max-width:60ch;">{{ activeProject.summary }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px;">
+          <sc-for list="{{ activeProject.shotItems }}" as="s" hint-placeholder-count="2">
+            <div role="img" aria-label="{{ s.alt }}" style="aspect-ratio:16/10;border-radius:12px;background-image:{{ s.bg }};background-size:contain;background-repeat:no-repeat;background-position:center;background-color:var(--surface-2);border:1px solid var(--ph-border);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:var(--ph-text);font-family:ui-monospace,Menlo,monospace;font-size:12px;">{{ s.text }}</div>
+          </sc-for>
+        </div>
+        <div style="max-width:62ch;font-size:16px;line-height:1.7;color:var(--text-dim);margin-bottom:26px;">
+          <sc-for list="{{ activeProject.body }}" as="para" hint-placeholder-count="2">
+            <p style="margin:0 0 14px;">{{ para }}</p>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;">
+          <sc-for list="{{ activeProject.tags }}" as="t" hint-placeholder-count="3">
+            <span style="font-size:13px;font-weight:600;color:var(--chip-text);background:var(--chip-bg);border:1px solid var(--chip-border);padding:6px 12px;border-radius:8px;">{{ t }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <a href="{{ activeProject.github }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--inv-text);background:var(--inv-bg);padding:13px 22px;border-radius:999px;">GitHub &nearr;</a>
+          <a href="{{ activeProject.demo }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--text);background:transparent;border:1px solid var(--border-mid);padding:13px 22px;border-radius:999px;">Live demo &nearr;</a>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- RESUME MODAL -->
+  <sc-if value="{{ resumeOpen }}">
+    <div role="dialog" aria-modal="true" aria-labelledby="zk-resume-title" onClick="{{ backdropCloseResume }}" onKeyDown="{{ trap }}" style="position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px);background:var(--scrim);backdrop-filter:blur(10px);animation:zkfade .25s ease both;">
+      <div data-modal-panel style="animation:zkfade .28s cubic-bezier(.22,.61,.36,1) both;position:relative;width:min(860px,100%);max-height:90vh;display:flex;flex-direction:column;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:20px;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--border);">
+          <h3 id="zk-resume-title" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;margin:0;color:var(--text);">Zach Kaiser Resume</h3>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <a href="resume.pdf" download data-magnetic="0.2" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#fff;background:var(--accent);padding:11px 20px;border-radius:999px;transition:transform .18s ease,box-shadow .3s ease;" style-hover="box-shadow:0 10px 26px rgba(59,130,246,.4);">Download PDF &darr;</a>
+            <button type="button" aria-label="Close resume" onClick="{{ closeResume }}" style="cursor:pointer;background:var(--chip-bg);border:1px solid var(--chip-border);color:var(--chip-text);width:38px;height:38px;border-radius:50%;font-size:22px;line-height:1;">&times;</button>
+          </div>
+        </div>
+        <div style="flex:1;overflow:auto;background:var(--ph-b);padding:0;min-height:360px;">
+          <object data="resume.pdf" type="application/pdf" style="width:100%;height:60vh;border:none;display:block;">
+            <div style="height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:32px;color:var(--ph-text);font-family:ui-monospace,Menlo,monospace;font-size:14px;background-image:repeating-linear-gradient(135deg,var(--ph-a) 0 14px,var(--ph-b) 14px 28px);">
+              <span style="font-size:30px;">&#128196;</span>
+              <span>[ PLACEHOLDER: resume.pdf ]</span>
+              <span style="max-width:36ch;line-height:1.5;">Add a file named <b>resume.pdf</b> to the project to show the live preview here.</span>
+            </div>
+          </object>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{},&quot;enableHeroMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;scrollReveals&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme:'dark',
+    navOpen:false, resumeOpen:false, activeProject:null,
+    activeSection:'hero', progress:0,
+    form:{name:'',email:'',message:''},
+    errors:{name:'',email:'',message:''},
+    touched:{name:false,email:false,message:false},
+    submitted:false, sentName:'',
+    typed:'', caretOn:true
+  };
+  PHRASES=[
+    'An aspiring software engineer.',
+    'Building real things, one project at a time.',
+    'Always learning something new.',
+    'Turning ideas into software that works.',
+    'Currently interning at nCino.'
+  ];
+  startTyping(){
+    if(this.reduced()){ this.setState({typed:this.PHRASES[0]}); return; }
+    let pi=0, ci=0, deleting=false;
+    const tick=()=>{
+      const full=this.PHRASES[pi];
+      ci += deleting ? -1 : 1;
+      this.setState({typed:full.slice(0,ci)});
+      let delay = deleting ? 34 : 62;
+      if(!deleting && ci===full.length){ deleting=true; delay=1600; }
+      else if(deleting && ci===0){ deleting=false; pi=(pi+1)%this.PHRASES.length; delay=340; }
+      this._typeT=setTimeout(tick, delay);
+    };
+    this._typeT=setTimeout(tick, 700);
+    this._caretT=setInterval(()=>this.setState(s=>({caretOn:!s.caretOn})), 530);
+  }
+  BG={dark:'#0a0c10', light:'#ffffff'};
+  DARK={'--bg':'#0a0c10','--text':'#eef2f8','--text-dim':'#aeb6c4','--text-mute':'#7b8494','--surface':'#14171d','--surface-2':'#06070a','--border':'rgba(238,242,248,.10)','--border-mid':'rgba(238,242,248,.20)','--chip-bg':'rgba(238,242,248,.06)','--chip-border':'rgba(238,242,248,.13)','--chip-text':'#cbd3e0','--ph-a':'#1a1f27','--ph-b':'#12161c','--ph-border':'rgba(238,242,248,.12)','--ph-text':'#7b8494','--accent':'#3b82f6','--accent-2':'#7aa7ff','--inv-bg':'#eef2f8','--inv-text':'#0a0c10','--hero-fade':'rgba(10,12,16,.9)','--overlay':'rgba(8,10,14,.98)','--scrim':'rgba(4,6,10,.74)','--success':'#a9c99b','--success-bg':'rgba(120,160,90,.16)','--success-border':'rgba(120,160,90,.4)','--err-border':'#9a5b4a','--err-text':'#e6a58f'};
+  LIGHT={'--bg':'#ffffff','--text':'#0b1220','--text-dim':'#3f4756','--text-mute':'#6b7280','--surface':'#f6f8fc','--surface-2':'#ffffff','--border':'#e3e8f0','--border-mid':'#cdd5e3','--chip-bg':'#eef2fb','--chip-border':'#dbe3f1','--chip-text':'#2c3546','--ph-a':'#e8edf6','--ph-b':'#dbe3f0','--ph-border':'#cdd6e4','--ph-text':'#8a93a5','--accent':'#2563eb','--accent-2':'#2563eb','--inv-bg':'#0b1220','--inv-text':'#ffffff','--hero-fade':'rgba(255,255,255,.55)','--overlay':'rgba(255,255,255,.98)','--scrim':'rgba(11,18,32,.5)','--success':'#4f7d3f','--success-bg':'rgba(120,160,90,.16)','--success-border':'rgba(120,160,90,.4)','--err-border':'#b57256','--err-text':'#a8543a'};
+  applyTheme(t){ const r=this.root||document.getElementById('zk-root'); if(!r) return; const m=t==='light'?this.LIGHT:this.DARK; for(const k in m) r.style.setProperty(k,m[k]); }
+
+  reduced(){ return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+  componentDidMount(){
+    this.root = document.getElementById('zk-root');
+    let saved=null; try{ saved=localStorage.getItem('zk-theme'); }catch(e){}
+    if(saved!=='dark' && saved!=='light'){
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      saved = prefersLight ? 'light' : 'dark';
+    }
+    this.applyTheme(saved);
+    this.setState({theme:saved}, ()=>{ this.applyTheme(this.state.theme); this.syncBody(); });
+    this.syncBody(saved);
+    if(this.props.scrollReveals !== false) this.setupReveals(); else this.showAll();
+    if(this.props.enableHeroMotion !== false) this.setupCanvas();
+    this.setupMagnetic();
+    this.startTyping();
+    this._onScroll = ()=>{ if(this._tick) return; this._tick=true; requestAnimationFrame(()=>{ this._tick=false; this.onScroll(); }); };
+    window.addEventListener('scroll', this._onScroll, {passive:true});
+    this._onKey = (e)=>this.onKey(e);
+    window.addEventListener('keydown', this._onKey);
+    this.onScroll();
+  }
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('keydown', this._onKey);
+    if(this._onResize) window.removeEventListener('resize', this._onResize);
+    if(this._raf) cancelAnimationFrame(this._raf);
+    if(this._typeT) clearTimeout(this._typeT);
+    if(this._caretT) clearInterval(this._caretT);
+    if(this._io) this._io.disconnect();
+    document.body.style.overflow='';
+  }
+
+  syncBody(theme){ document.body.style.background = this.BG[theme||this.state.theme] || this.BG.dark; }
+  toggleTheme(){
+    this.setState(s=>{ const t = s.theme==='dark'?'light':'dark'; try{ localStorage.setItem('zk-theme',t); }catch(e){} return {theme:t}; }, ()=>{ this.applyTheme(this.state.theme); this.syncBody(); });
+  }
+
+  anyOpen(){ return this.state.resumeOpen || this.state.activeProject!==null || this.state.navOpen; }
+  openModal(patch){
+    if(!this.anyOpen()) this._lastFocus = document.activeElement;
+    this.setState(patch, ()=>{ document.body.style.overflow='hidden'; requestAnimationFrame(()=>this.focusModal()); });
+  }
+  closeModal(patch){
+    this.setState(patch, ()=>{
+      if(!this.anyOpen()){ document.body.style.overflow=''; if(this._lastFocus && this._lastFocus.focus) this._lastFocus.focus(); }
+    });
+  }
+
+  showAll(){ if(!this.root) return; this.root.querySelectorAll('[data-reveal]').forEach(el=>{el.style.opacity=1;el.style.transform='none';}); }
+
+  setupReveals(){
+    const els = this.root.querySelectorAll('[data-reveal]');
+    if(this.reduced() || !('IntersectionObserver' in window)){ this.showAll(); return; }
+    this._io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){
+          const el=en.target; const d=el.getAttribute('data-reveal-delay')||0;
+          el.style.transition='opacity .7s cubic-bezier(.22,.61,.36,1) '+d+'ms, transform .7s cubic-bezier(.22,.61,.36,1) '+d+'ms';
+          el.style.opacity=1; el.style.transform='none';
+          this._io.unobserve(el);
+        }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+    els.forEach(el=>this._io.observe(el));
+  }
+
+  setupMagnetic(){
+    if(this.reduced()) return;
+    this.root.querySelectorAll('[data-magnetic]').forEach(el=>{
+      const s = parseFloat(el.getAttribute('data-magnetic'))||0.25;
+      el.addEventListener('pointermove', e=>{ const r=el.getBoundingClientRect(); const mx=e.clientX-r.left-r.width/2; const my=e.clientY-r.top-r.height/2; el.style.transform='translate('+(mx*s)+'px,'+(my*s)+'px)'; });
+      el.addEventListener('pointerleave', ()=>{ el.style.transform='translate(0,0)'; });
+    });
+  }
+
+  setupCanvas(){
+    const c = document.getElementById('zk-hero-canvas');
+    const hero = document.getElementById('hero');
+    if(!c || !hero || this.reduced()) return;
+    const ctx = c.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    const small = window.innerWidth < 720;
+    const spacing = small ? 56 : 42;
+    const reach = small ? 100 : 150;
+    let dots=[], cw=0, ch=0; const mouse={x:-9999,y:-9999};
+    const resize=()=>{
+      const r=c.getBoundingClientRect(); cw=r.width; ch=r.height;
+      c.width=r.width*dpr; c.height=r.height*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      dots=[]; const cols=Math.ceil(r.width/spacing)+1, rows=Math.ceil(r.height/spacing)+1;
+      for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){ dots.push({bx:i*spacing,by:j*spacing}); }
+    };
+    resize();
+    this._onResize=()=>resize(); window.addEventListener('resize', this._onResize);
+    hero.addEventListener('pointermove', e=>{ const r=c.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; });
+    hero.addEventListener('pointerleave', ()=>{ mouse.x=-9999; mouse.y=-9999; });
+    let t=0;
+    const draw=()=>{
+      t+=0.006; ctx.clearRect(0,0,cw,ch);
+      const light = this.state.theme==='light';
+      const rgb = light ? '37,99,235' : '122,167,255';
+      const base = light ? 0.10 : 0.14;
+      for(const d of dots){
+        const drift = Math.sin(t + d.bx*0.011)*1.8 + Math.cos(t + d.by*0.013)*1.8;
+        let ox=0, oy=0, r0=1.1, a=base;
+        const dx=d.bx-mouse.x, dy=d.by-mouse.y, dist=Math.hypot(dx,dy);
+        if(dist<reach){ const f=1-dist/reach; const inv=dist||1; ox=(dx/inv)*f*12; oy=(dy/inv)*f*12; r0=1.1+f*2.4; a=base+f*0.5; }
+        ctx.beginPath();
+        ctx.arc(d.bx+ox+drift*0.4, d.by+oy+drift*0.4, r0, 0, 6.2832);
+        ctx.fillStyle='rgba('+rgb+','+a+')'; ctx.fill();
+      }
+      this._raf=requestAnimationFrame(draw);
+    };
+    draw();
+  }
+
+  onScroll(){
+    const doc=document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const sy = window.scrollY || doc.scrollTop;
+    const p = max>0 ? sy/max : 0;
+    const ids=['hero','about','experience','projects','contact'];
+    let active='hero'; const mid = sy + window.innerHeight*0.35;
+    for(const id of ids){ const el=document.getElementById(id); if(el && el.offsetTop<=mid) active=id; }
+    if(active!==this.state.activeSection || Math.abs(p-this.state.progress)>0.003)
+      this.setState({progress:Math.min(1,Math.max(0,p)), activeSection:active});
+  }
+
+  onKey(e){
+    if(e.key==='Escape'){
+      if(this.state.resumeOpen) this.closeModal({resumeOpen:false});
+      else if(this.state.activeProject!==null) this.closeModal({activeProject:null});
+      else if(this.state.navOpen) this.closeModal({navOpen:false});
+    }
+  }
+
+  focusModal(){
+    const panel = this.root.querySelector('[data-modal-panel]') || this.root.querySelector('[role="dialog"]');
+    if(!panel) return;
+    const f = panel.querySelector('button,a[href],input,textarea,[tabindex]:not([tabindex="-1"])');
+    if(f) f.focus();
+  }
+  trap(e){
+    if(e.key!=='Tab') return;
+    const m=e.currentTarget;
+    const f=Array.from(m.querySelectorAll('button,a[href],input,textarea,[tabindex]:not([tabindex="-1"])')).filter(el=>el.offsetParent!==null||el===document.activeElement);
+    if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+
+  go(id){ return (e)=>{ if(e) e.preventDefault(); const el=document.getElementById(id); if(!el){ this.setState({navOpen:false}); return; } const y=el.getBoundingClientRect().top+window.scrollY-(id==='hero'?0:56); window.scrollTo({top:Math.max(0,y), behavior:this.reduced()?'auto':'smooth'}); this.setState({navOpen:false}); }; }
+
+  validate(k,v){
+    if(k==='name') return v.trim()? '' : 'Please enter your name.';
+    if(k==='email') return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim())? '' : 'Enter a valid email address.';
+    if(k==='message') return v.trim().length>=10? '' : 'Please write at least 10 characters.';
+    return '';
+  }
+  setField(k){ return (e)=>{ const v=e.target.value; this.setState(s=>{ const errors={...s.errors}; if(s.touched[k]) errors[k]=this.validate(k,v); return {form:{...s.form,[k]:v}, errors}; }); }; }
+  blurField(k){ return ()=>{ this.setState(s=>({ touched:{...s.touched,[k]:true}, errors:{...s.errors,[k]:this.validate(k,s.form[k])} })); }; }
+  submit(e){
+    e.preventDefault();
+    const f=this.state.form;
+    const errors={ name:this.validate('name',f.name), email:this.validate('email',f.email), message:this.validate('message',f.message) };
+    if(errors.name||errors.email||errors.message){ this.setState({errors, touched:{name:true,email:true,message:true}}); return; }
+    this.setState({submitted:true, sentName:f.name.trim().split(' ')[0]});
+  }
+  resetForm(){ this.setState({submitted:false, form:{name:'',email:'',message:''}, errors:{name:'',email:'',message:''}, touched:{name:false,email:false,message:false}}); }
+
+  get PROJECTS(){
+    return [
+      { title:'Coach11', delay:0, dates:'Jan 2026 \u2014 Present', role:'Project Manager', img:'assets/coach11-thumb.png',
+        tags:['TypeScript','Electron','AWS'],
+        summary:'Gives UNCW Women\u2019s Soccer coaches one place to upload match film and tag the moments that matter.',
+        github:'https://github.com/zachwkaiser', demo:'#',
+        shots:['assets/coach11-upload.png','assets/coach11-playlists.png'],
+        body:[
+          'Coach11 is a desktop app that lets UNCW Women\u2019s Soccer coaches and analysts upload match film and tag in-game events, so they can find and review key moments without scrubbing through hours of video.',
+          'I served as project manager for a 5-person team, coordinating two-week sprints. I designed the database and built front-end features on an AWS backend using S3, RDS, API Gateway, and Lambda.'
+        ] },
+      { title:'INSIGHTs', delay:80, dates:'Nov 2025 \u2014 May 2026', role:null, img:'assets/insights-thumb.png',
+        tags:['Flask','Python','JavaScript'],
+        summary:'Lets nursing faculty view insights from AI-powered assessments of students\u2019 speech in one clear dashboard.',
+        github:'https://github.com/zachwkaiser', demo:'#',
+        shots:['assets/insights-admin.png','assets/insights-simu.png'],
+        body:[
+          'INSIGHTs is a front-end web application, backed by a Flask server, for viewing insights from AI-powered assessments that analyze nursing students\u2019 speech quality and related metrics.',
+          'I built the front end and integrated an API to retrieve assessment data from AWS, working with the Department of Computer Science and the School of Nursing.'
+        ] },
+      { title:'Wi-Fi Heatmap', delay:160, dates:'Aug 2025 \u2014 Dec 2025', role:null, img:'assets/wifi-heatmap.png',
+        tags:['Python','Raspberry Pi'],
+        summary:'Estimates where people are in a space by turning Wi-Fi signal data into a live heatmap.',
+        github:'https://github.com/zachwkaiser', demo:'#',
+        shots:['assets/wifi-heatmap.png'],
+        body:[
+          'Wi-Fi Heatmap captures Wi-Fi scan data from dongles on Raspberry Pis and triangulates pings into a heatmap that estimates people\u2019s locations in a space.',
+          'I worked with a 5-person team to turn the incoming scan data into a map anyone could read at a glance.'
+        ] }
+    ];
+  }
+
+  renderVals(){
+    const s=this.state;
+    const active=s.activeSection;
+    const navLinks=[
+      {id:'about',label:'About'},{id:'experience',label:'Experience'},
+      {id:'projects',label:'Projects'},{id:'contact',label:'Contact'}
+    ].map(l=>({ ...l, href:'#'+l.id, go:this.go(l.id), active01: active===l.id?1:0, dim: active===l.id?1:0.72, current: active===l.id?'true':'false' }));
+
+    const experiences=[
+      { role:'Software Engineer Intern', org:'nCino \u00b7 Commercial Pricing & Profitability', dates:'May 2026 \u2014 Present \u00b7 Wilmington, NC', current:true, delay:0,
+        bullets:[
+          'Work across the stack with Apex, Lightning Web Components, and SOQL, developing front-end feature work while also fixing backend bugs surfaced internally and by customers.',
+          'Built a new view that surfaces a bank\u2019s unprofitable relationships in a single table.',
+          'Owned an end-to-end migration of 125 tests from Cucumber to Playwright, then automated a nightly run that posts a full test report to Slack.',
+          'Led daily stand-ups and worked within an agile workflow, coordinating priorities and unblocking the engineering team.'
+        ] },
+      { role:'Undergraduate Research Assistant', org:'UNC Wilmington', dates:'Nov 2025 \u2014 May 2026', current:false, delay:90,
+        bullets:[
+          'Built a front-end web application with Flask, Python, and JavaScript for viewing insights from AI-powered assessments of nursing students\u2019 speech quality and related metrics.',
+          'Integrated an API to retrieve patient assessment data from AWS, and met weekly with the Department of Computer Science and School of Nursing to align on requirements.'
+        ] },
+      { role:'Retail Golf Associate', org:'Dick\u2019s Sporting Goods', dates:'May 2025 \u2014 May 2026', current:false, delay:180,
+        bullets:[
+          'Advised and sold to customers on golf equipment, recommending gear to fit their needs as part of the sales team.',
+          'Performed custom club fittings and equipment services for customers.'
+        ] }
+    ];
+
+    const skills=[
+      { name:'Python', slug:'python' },
+      { name:'Java', logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
+      { name:'JavaScript', slug:'javascript' },
+      { name:'TypeScript', slug:'typescript' },
+      { name:'SQL', logo:'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/mysql.svg' },
+      { name:'Apex', logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/salesforce/salesforce-original.svg' },
+      { name:'HTML/CSS', slug:'html5' },
+      { name:'React', slug:'react' },
+      { name:'Next.js', slug:'nextdotjs' },
+      { name:'AWS', logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg' },
+      { name:'Salesforce', logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/salesforce/salesforce-original.svg' },
+      { name:'Git', slug:'git' }
+    ].map(s=>({ ...s, logo: s.logo || ('https://cdn.simpleicons.org/'+s.slug) }));
+    const marqueeSkills=[...skills, ...skills];
+
+    const contacts=[
+      { logo:'https://cdn.simpleicons.org/gmail', label:'Email', value:'zachwkaiser@gmail.com', href:'mailto:zachwkaiser@gmail.com' },
+      { logo:'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/linkedin.svg', label:'LinkedIn', value:'/in/zachwkaiser', href:'https://www.linkedin.com/in/zachwkaiser/' },
+      { logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', label:'GitHub', value:'@zachwkaiser', href:'https://github.com/zachwkaiser' }
+    ];
+
+    const projects=this.PROJECTS.map((p,i)=>({ ...p, num:String(i+1).padStart(2,'0'), aria:'Open details for '+p.title, shotBg: p.img?('url("'+p.img+'")'):'none', shotText: p.img?'':'[ screenshot ]', shotAlt: p.img?(p.title+' screenshot'):('Screenshot placeholder for '+p.title), open:()=>this.openModal({activeProject:i}) }));
+    const ap = s.activeProject!==null ? (()=>{ const pr=this.PROJECTS[s.activeProject]; const isImg=x=>/\.(png|jpe?g|webp|gif)$/i.test(x); return {...pr, roleSuffix: pr.role ? '  \u00b7  '+pr.role : '', shotItems: (pr.shots||[]).map(x=> isImg(x) ? {bg:'url("'+x+'")', text:'', alt:pr.title+' screenshot'} : {bg:'repeating-linear-gradient(135deg,var(--ph-a) 0 12px,var(--ph-b) 12px 24px)', text:x, alt:'Screenshot placeholder: '+x} )}; })() : null;
+
+    const bd=(k,invalid)=> invalid ? 'var(--err-border)' : 'var(--border-mid)';
+    const nErr=!!s.errors.name, eErr=!!s.errors.email, mErr=!!s.errors.message;
+
+    const atTop = s.activeSection==='hero' && s.progress<0.02;
+    const light = s.theme==='light';
+
+    return {
+      setRoot: el=>{ if(el) this.root=el; },
+      theme:s.theme,
+      isLight: light ? 'true' : 'false',
+      knobX: light ? '0px' : '30px',
+      themeLabel: light ? 'Switch to dark mode' : 'Switch to light mode',
+      toggleTheme:()=>this.toggleTheme(),
+      progressPct: Math.round(s.progress*100)+'%',
+      typedText: s.typed,
+      caretOpacity: s.caretOn ? 1 : 0,
+      showBackTop: s.progress>0.12 && !this.anyOpen(),
+      navBg: atTop ? 'transparent' : (light ? 'rgba(255,255,255,.85)' : 'rgba(10,12,16,.82)'),
+      navBorder: atTop ? 'transparent' : 'var(--border)',
+      navLinks, experiences, skills, marqueeSkills, contacts, projects,
+      navOpen:s.navOpen, resumeOpen:s.resumeOpen,
+      activeProject:ap,
+      submitted:s.submitted, showForm:!s.submitted, sentName:s.sentName,
+      form:s.form, errors:s.errors,
+      nameError:nErr, emailError:eErr, msgError:mErr,
+      nameInvalid:nErr?'true':'false', emailInvalid:eErr?'true':'false', msgInvalid:mErr?'true':'false',
+      nameBorder:bd('name',nErr), emailBorder:bd('email',eErr), msgBorder:bd('message',mErr),
+      toggleMenu:()=>{ if(this.state.navOpen) this.closeModal({navOpen:false}); else this.openModal({navOpen:true}); },
+      closeMenu:()=>this.closeModal({navOpen:false}),
+      openResume:()=>this.openModal({resumeOpen:true, navOpen:false}),
+      closeResume:()=>this.closeModal({resumeOpen:false}),
+      backdropCloseResume:(e)=>{ if(e.target===e.currentTarget) this.closeModal({resumeOpen:false}); },
+      closeProject:()=>this.closeModal({activeProject:null}),
+      backdropCloseProject:(e)=>{ if(e.target===e.currentTarget) this.closeModal({activeProject:null}); },
+      trap:(e)=>this.trap(e),
+      goHero:this.go('hero'), goAbout:this.go('about'), goProjects:this.go('projects'),
+      setName:this.setField('name'), setEmail:this.setField('email'), setMessage:this.setField('message'),
+      blurName:this.blurField('name'), blurEmail:this.blurField('email'), blurMessage:this.blurField('message'),
+      submit:(e)=>this.submit(e), resetForm:()=>this.resetForm()
+    };
+  }
+}
+</script>
+</body>
+</html>

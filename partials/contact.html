@@ -1,0 +1,60 @@
+<section id="contact" class="zk-page zk-section">
+<div class="zk-container zk-container--mid zk-contact-grid">
+        <div data-reveal>
+          <p class="zk-eyebrow">Contact</p>
+          <h2 class="zk-heading zk-heading--contact">Let's talk.</h2>
+          <p class="zk-lead zk-contact-intro">Feel free to reach out. I'm always open to connecting, whether it's about an opportunity, a project, or just to talk. You can send a note or reach me directly below.</p>
+          <div class="zk-contact-list">
+            <a class="zk-contact-item" href="mailto:zachwkaiser@gmail.com">
+              <span class="zk-contact-icon" style="-webkit-mask-image:url(https://cdn.simpleicons.org/gmail);mask-image:url(https://cdn.simpleicons.org/gmail)" aria-hidden="true"></span>
+              <span class="zk-contact-meta">
+                <span class="zk-contact-label">Email</span>
+                <span>zachwkaiser@gmail.com</span>
+              </span>
+            </a>
+            <a class="zk-contact-item" href="https://www.linkedin.com/in/zachwkaiser/" target="_blank" rel="noopener">
+              <span class="zk-contact-icon" style="-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/simple-icons@11/icons/linkedin.svg);mask-image:url(https://cdn.jsdelivr.net/npm/simple-icons@11/icons/linkedin.svg)" aria-hidden="true"></span>
+              <span class="zk-contact-meta">
+                <span class="zk-contact-label">LinkedIn</span>
+                <span>/in/zachwkaiser</span>
+              </span>
+            </a>
+            <a class="zk-contact-item" href="https://github.com/zachwkaiser" target="_blank" rel="noopener">
+              <span class="zk-contact-icon" style="-webkit-mask-image:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg);mask-image:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg)" aria-hidden="true"></span>
+              <span class="zk-contact-meta">
+                <span class="zk-contact-label">GitHub</span>
+                <span>@zachwkaiser</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="zk-form-card" data-reveal data-reveal-delay="120">
+          <div id="zk-form-success" class="zk-form-success is-hidden" role="status">
+            <span class="zk-form-success-icon" aria-hidden="true">&#10003;</span>
+            <h3>Message sent!</h3>
+            <p>Thanks for reaching out, <span id="zk-sent-name"></span>. I'll get back to you soon.</p>
+            <button type="button" id="zk-form-reset" class="zk-btn--link">Send another &rarr;</button>
+          </div>
+
+          <form id="zk-contact-form" class="zk-form" novalidate>
+            <div class="zk-field">
+              <label for="zk-name">Name</label>
+              <input id="zk-name" name="name" type="text" placeholder="Jane Recruiter" aria-describedby="zk-name-err" autocomplete="name" />
+              <span id="zk-name-err" class="zk-field-error" role="alert"></span>
+            </div>
+            <div class="zk-field">
+              <label for="zk-email">Email</label>
+              <input id="zk-email" name="email" type="email" placeholder="jane@company.com" aria-describedby="zk-email-err" autocomplete="email" />
+              <span id="zk-email-err" class="zk-field-error" role="alert"></span>
+            </div>
+            <div class="zk-field">
+              <label for="zk-msg">Message</label>
+              <textarea id="zk-msg" name="message" rows="4" placeholder="Tell me a little about the role or project…" aria-describedby="zk-msg-err"></textarea>
+              <span id="zk-msg-err" class="zk-field-error" role="alert"></span>
+            </div>
+            <button type="submit" class="zk-btn zk-btn--submit" data-magnetic="0.2">Send message</button>
+          </form>
+        </div>
+      </div>
+      </section>

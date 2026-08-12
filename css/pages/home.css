@@ -1,0 +1,92 @@
+/* Home / hero page */
+
+.zk-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 96px var(--page-pad-x) 60px;
+}
+
+.zk-hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.zk-hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 78% 12%, rgba(59, 130, 246, 0.16), transparent 55%),
+    linear-gradient(180deg, transparent 55%, var(--hero-fade) 100%);
+  pointer-events: none;
+}
+
+.zk-hero-inner {
+  position: relative;
+  max-width: 1000px;
+}
+
+.zk-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 0 0 22px;
+}
+
+.zk-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.zk-hero-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(44px, 9vw, 116px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  margin: 0 0 26px;
+  color: var(--text);
+}
+
+.zk-hero-typed {
+  max-width: 56ch;
+  min-height: 2.6em;
+  font-size: clamp(18px, 2.3vw, 24px);
+  line-height: 1.5;
+  color: var(--text-dim);
+  margin: 0 0 40px;
+}
+
+.zk-hero-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  transform: translateY(3px);
+  background: var(--accent);
+  opacity: 1;
+  vertical-align: baseline;
+}
+
+.zk-hero-caret.is-off {
+  opacity: 0;
+}
+
+.zk-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}

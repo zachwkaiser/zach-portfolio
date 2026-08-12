@@ -1,0 +1,110 @@
+/* Keyframes, reveals, reduced motion */
+
+@keyframes zkbob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+@keyframes zkfade {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zkslide {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zkmarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.zk-slide-in {
+  animation: zkslide 0.7s ease both;
+}
+
+.zk-slide-in-1 {
+  animation: zkslide 0.7s ease 0.06s both;
+}
+
+.zk-slide-in-2 {
+  animation: zkslide 0.7s ease 0.14s both;
+}
+
+.zk-slide-in-3 {
+  animation: zkslide 0.7s ease 0.2s both;
+}
+
+.zk-fade-in {
+  animation: zkfade 0.3s ease both;
+}
+
+.zk-fade-in-panel {
+  animation: zkfade 0.28s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.zk-fade-in-slow {
+  animation: zkfade 0.4s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .zk-slide-in,
+  .zk-slide-in-1,
+  .zk-slide-in-2,
+  .zk-slide-in-3,
+  .zk-fade-in,
+  .zk-fade-in-panel,
+  .zk-fade-in-slow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .zk-marquee {
+    animation: none !important;
+    flex-wrap: wrap !important;
+    width: auto !important;
+  }
+}

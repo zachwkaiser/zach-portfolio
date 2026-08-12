@@ -1,0 +1,109 @@
+/* Page shells and section layouts */
+
+.zk-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: var(--page-pad-y) var(--page-pad-x);
+}
+
+.zk-section {
+  border-top: 1px solid var(--border);
+}
+
+.zk-page--flush-top {
+  padding-top: var(--nav-h);
+}
+
+.zk-container {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.zk-container--wide {
+  max-width: 1200px;
+}
+
+.zk-container--mid {
+  max-width: 1080px;
+}
+
+.zk-container--narrow {
+  max-width: 960px;
+}
+
+.zk-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin: 0 0 14px;
+}
+
+.zk-eyebrow--lg {
+  margin-bottom: 18px;
+}
+
+.zk-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 4.4vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: var(--text);
+}
+
+.zk-heading--about {
+  margin: 0 0 26px;
+  max-width: 16ch;
+}
+
+.zk-heading--experience {
+  max-width: 18ch;
+}
+
+.zk-heading--projects {
+  margin: 0 0 16px;
+}
+
+.zk-heading--contact {
+  margin: 0 0 20px;
+  max-width: 14ch;
+}
+
+.zk-lead {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.zk-lead--mute {
+  color: var(--text-mute);
+}
+
+.zk-prose {
+  max-width: 62ch;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.zk-prose p {
+  margin: 0 0 18px;
+}
+
+.zk-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.zk-section-head {
+  margin-bottom: clamp(40px, 6vw, 64px);
+  max-width: 60ch;
+}
+
+.zk-section-head--timeline {
+  margin-bottom: clamp(48px, 7vw, 72px);
+}

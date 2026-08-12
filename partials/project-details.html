@@ -1,0 +1,76 @@
+<template data-project-detail="coach11">
+      <button type="button" class="zk-modal-close" data-close-project aria-label="Close">&times;</button>
+      <p class="zk-modal-kicker">Project</p>
+      <h3 id="zk-proj-title" class="zk-modal-title">Coach11</h3>
+      <p class="zk-modal-meta">Jan 2026 — Present &nbsp;·&nbsp; Project Manager</p>
+      <p class="zk-modal-summary">Gives UNCW Women’s Soccer coaches one place to upload match film and tag the moments that matter.</p>
+      <div class="zk-modal-shots">
+        <div class="zk-modal-shot" role="img" aria-label="Coach11 screenshot" style="background-image:url(assets/coach11-upload.png)"></div>
+        <div class="zk-modal-shot" role="img" aria-label="Coach11 screenshot" style="background-image:url(assets/coach11-playlists.png)"></div>
+      </div>
+      <div class="zk-modal-body">
+        <p>Coach11 is a desktop app that lets UNCW Women’s Soccer coaches and analysts upload match film and tag in-game events, so they can find and review key moments without scrubbing through hours of video.</p>
+        <p>I served as project manager for a 5-person team, coordinating two-week sprints. I designed the database and built front-end features on an AWS backend using S3, RDS, API Gateway, and Lambda.</p>
+      </div>
+      <div class="zk-modal-tags">
+        <span class="zk-chip zk-chip--lg">TypeScript</span>
+        <span class="zk-chip zk-chip--lg">Electron</span>
+        <span class="zk-chip zk-chip--lg">AWS</span>
+      </div>
+      <div class="zk-modal-actions">
+        <a href="https://github.com/zachwkaiser" target="_blank" rel="noopener" class="zk-btn--inv">GitHub &nearr;</a>
+        <a href="#" class="zk-btn--outline">Live demo &nearr;</a>
+      </div>
+    </template>
+
+    <template data-project-detail="insights">
+      <button type="button" class="zk-modal-close" data-close-project aria-label="Close">&times;</button>
+      <p class="zk-modal-kicker">Project</p>
+      <h3 class="zk-modal-title">INSIGHTs</h3>
+      <p class="zk-modal-meta">Nov 2025 — May 2026</p>
+      <p class="zk-modal-summary">Lets nursing faculty view insights from AI-powered assessments of students’ speech in one clear dashboard.</p>
+      <div class="zk-modal-shots">
+        <div class="zk-modal-shot" role="img" aria-label="INSIGHTs screenshot" style="background-image:url(assets/insights-admin.png)"></div>
+        <div class="zk-modal-shot" role="img" aria-label="INSIGHTs screenshot" style="background-image:url(assets/insights-simu.png)"></div>
+      </div>
+      <div class="zk-modal-body">
+        <p>INSIGHTs is a front-end web application, backed by a Flask server, for viewing insights from AI-powered assessments that analyze nursing students’ speech quality and related metrics.</p>
+        <p>I built the front end and integrated an API to retrieve assessment data from AWS, working with the Department of Computer Science and the School of Nursing.</p>
+      </div>
+      <div class="zk-modal-tags">
+        <span class="zk-chip zk-chip--lg">Flask</span>
+        <span class="zk-chip zk-chip--lg">Python</span>
+        <span class="zk-chip zk-chip--lg">JavaScript</span>
+      </div>
+      <div class="zk-modal-actions">
+        <a href="https://github.com/zachwkaiser" target="_blank" rel="noopener" class="zk-btn--inv">GitHub &nearr;</a>
+        <a href="#" class="zk-btn--outline">Live demo &nearr;</a>
+      </div>
+    </template>
+
+    <template data-project-detail="wifi">
+      <button type="button" class="zk-modal-close" data-close-project aria-label="Close">&times;</button>
+      <p class="zk-modal-kicker">Project</p>
+      <h3 class="zk-modal-title">Wi-Fi Heatmap</h3>
+      <p class="zk-modal-meta">Aug 2025 — Dec 2025</p>
+      <p class="zk-modal-summary">Estimates where people are in a space by turning Wi-Fi signal data into a live heatmap.</p>
+      <div class="zk-modal-shots">
+        <div class="zk-modal-shot" role="img" aria-label="Wi-Fi Heatmap screenshot" style="background-image:url(assets/wifi-heatmap.png)"></div>
+      </div>
+      <div class="zk-modal-body">
+        <p>Wi-Fi Heatmap captures Wi-Fi scan data from dongles on Raspberry Pis and triangulates pings into a heatmap that estimates people’s locations in a space.</p>
+        <p>I worked with a 5-person team to turn the incoming scan data into a map anyone could read at a glance.</p>
+      </div>
+      <div class="zk-modal-tags">
+        <span class="zk-chip zk-chip--lg">Python</span>
+        <span class="zk-chip zk-chip--lg">Raspberry Pi</span>
+      </div>
+      <div class="zk-modal-actions">
+        <a href="https://github.com/zachwkaiser" target="_blank" rel="noopener" class="zk-btn--inv">GitHub &nearr;</a>
+        <a href="#" class="zk-btn--outline">Live demo &nearr;</a>
+      </div>
+    </template>
+
+    <div id="zk-project-modal" class="zk-modal" role="dialog" aria-modal="true" aria-labelledby="zk-proj-title" hidden>
+      <div class="zk-modal-panel" data-modal-panel id="zk-project-mount"></div>
+    </div>

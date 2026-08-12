@@ -1,0 +1,84 @@
+/* About page */
+
+.zk-about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: start;
+}
+
+.zk-about-photo {
+  align-self: stretch;
+}
+
+.zk-about-photo img {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.zk-skills {
+  margin-top: clamp(56px, 8vw, 96px);
+}
+
+.zk-skills-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(20px, 2.4vw, 26px);
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+
+.zk-marquee-wrap {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.zk-marquee {
+  display: flex;
+  align-items: center;
+  gap: clamp(40px, 6vw, 72px);
+  width: max-content;
+  animation: zkmarquee 34s linear infinite;
+}
+
+.zk-skill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.zk-skill-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  background: var(--text);
+  opacity: 0.82;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.zk-skill-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+@media (min-width: 860px) {
+  .zk-about-grid {
+    grid-template-columns: 1.25fr 0.85fr;
+  }
+}

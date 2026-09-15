@@ -131,6 +131,24 @@
   display: block;
 }
 
+.zk-form-error {
+  display: none;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--err-text);
+}
+
+.zk-form-error.is-visible {
+  display: block;
+}
+
+.zk-btn--submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  box-shadow: none;
+}
+
 .zk-form-success {
   min-height: 340px;
   display: flex;

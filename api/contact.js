@@ -33,13 +33,13 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Please enter your name." });
   }
   if (!isValidEmail(email)) {
-    return res.status(400).json({ error: "Enter a valid email address." });
+    return res.status(400).json({ error: "Please enter a valid email address." });
   }
-  if (message.length < 10) {
-    return res.status(400).json({ error: "Please write at least 10 characters." });
+  if (message.length < 0) {
+    return res.status(400).json({ error: "Please enter a message." });
   }
   if (message.length > 5000) {
-    return res.status(400).json({ error: "Message is too long." });
+    return res.status(400).json({ error: "Message is too long (max 5000 characters)." });
   }
 
   const body = [
